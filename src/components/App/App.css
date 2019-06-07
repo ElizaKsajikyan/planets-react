@@ -1,0 +1,19 @@
+
+.spinner {
+    background: rgba(0,0,0,.8);
+    transition: .5s;
+    }
+
+.spinner i{
+    animation: spin infinite 1s;
+    font-size: 50px;
+    }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

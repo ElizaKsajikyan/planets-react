@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import PlanetsService from './../../services/PlanetsService';
 import PlanetItem from './../PlanetItem'
+import PlanetsList from '../PlanetsList';
 
 class App extends React.Component {
     state = {
@@ -15,6 +16,7 @@ class App extends React.Component {
         this.setState(({planets}) => {
             return {
                 planets: a,
+                activePlanet: a[0]
             }
         });
     };
@@ -32,50 +34,42 @@ class App extends React.Component {
         this.spinner = false;
     };
 
-    takeItem = (item) => {
-        let a = item;
+    takeItem(item) {
+        
         this.setState(({activePlanet}) => {
-            return (
-                this.state.activePlanet=a
-            )
-        })
-
+            return {
+                activePlanet: item
+            }
+        });
     };
 
     render() {
         let items = this.state.planets.map((item) => {
             let id = item.url.match(/\/(\d+)\//)[1];
             return (
-                    <ul className={''}>
-                        <li>
-                            <button type='button' onClick={
-                                this.takeItem.bind(this, item)
-                            }>{`Planet ${id}`}</button>
-                        </li>
-                    </ul>
+                    <li key={id}>
+                        <button type='button' onClick={
+                            () => {
+                                this.takeItem(item)
+                            }
+                        }>{`Planet ${id}`}</button>
+                    </li>
             )
         });
 
-
         return (
             <div>
-            <div className="App position-relative">
-                <div className={this.spinner ? 'd-block' : 'd-none'}>
-                    <div
-                        className={'spinner position-absolute w-100 h-100 d-flex align-items-center justify-content-center'}>
-                        <i className="fa fa-spinner text-white"></i>
+                <div className="App position-relative">
+                    <div className={this.spinner ? 'd-block' : 'd-none'}>
+                        <div
+                            className={'spinner position-absolute w-100 h-100 d-flex align-items-center justify-content-center'}>
+                            <i className="fa fa-spinner text-white"></i>
+                        </div>
                     </div>
+                    {this.platetItem()}
                 </div>
-                {this.platetItem()}
+                <PlanetsList planesList={items} planet={this.state.activePlanet}/>
             </div>
-
-            <div className={'container d-flex'}>
-            <div className={'col-6'}>
-            {items}
-    </div>
-    <div className={'col-6'}>{this.state.activePlanet.name}</div>
-    </div>
-    </div>
         );
     }
 }
